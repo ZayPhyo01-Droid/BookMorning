@@ -8,7 +8,7 @@ fun BookResponse.toModel(): List<BookModel> {
         BookModel(
             id = it.id,
             bookCover = it.bookCover.orEmpty(),
-            bookName = it.bookCover ?: ""
+            bookName = it.name ?: ""
         )
     }
 }

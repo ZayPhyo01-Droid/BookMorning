@@ -24,16 +24,16 @@ data class Book(
     @SerialName("book_cover")
     val bookCover: String?,
     val author: Author,
-    val category: Category
+    val category: Category,
+    val rating: Double,
+    val price: Double
 )
 
 @Serializable
 data class Author(
     val id: String,
     val name: String?,
-    val description: String?,
-    val rating: Int,
-    val price: Double
+    val description: String?
 )
 
 @Serializable

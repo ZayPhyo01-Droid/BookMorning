@@ -1,5 +1,6 @@
 package com.ui.bookmorning.data.service
 
+import android.util.Log
 import com.ui.bookmorning.data.model.response.BookResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
