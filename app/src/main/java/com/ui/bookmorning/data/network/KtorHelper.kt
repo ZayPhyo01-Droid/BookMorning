@@ -13,7 +13,7 @@ class KtorHelper {
     fun getClient(): HttpClient {
         return HttpClient(Android) {
             defaultRequest {
-                url("https://74af55de-7922-44fa-a753-37e35aa5611f.mock.pstmn.io/api/")
+                url("https://aeef-2a09-bac5-56bb-15f-00-23-255.ngrok-free.app/api/")
             }
             install(ContentNegotiation) {
                 json()

@@ -6,6 +6,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.headers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -15,7 +16,11 @@ import kotlinx.coroutines.withContext
 class BookService(private val httpClient: HttpClient) {
     suspend fun getBook(): BookResponse {
         val bookResponse: BookResponse =  withContext(Dispatchers.IO) {
-            val httpResponse: HttpResponse = httpClient.get("user/books_simple")
+            val httpResponse: HttpResponse = httpClient.get("user/books_simple"){
+                headers {
+                    append("ngrok-skip-browser-warning", "69420")
+                }
+            }
             // meta , http status , body -> json
             httpResponse.body()
         }
