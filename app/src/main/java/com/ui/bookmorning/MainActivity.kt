@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.ui.bookmorning.databinding.ActivityMainBinding
 import com.ui.bookmorning.ui.adapter.BookAdapter
 import com.ui.bookmorning.ui.viewmodel.BookViewModel
@@ -34,12 +35,6 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.navigation_fav -> {
-                    changeFragment(
-                        fragment = FavouriteBookList.newInstance()
-                    )
-                    true
-                }
 
                 else -> false
             }

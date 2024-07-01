@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.ui.bookmorning.databinding.FragmentBookListBinding
 import com.ui.bookmorning.ui.adapter.BookAdapter
 import com.ui.bookmorning.ui.viewmodel.BookViewModel
@@ -31,9 +32,22 @@ class BookListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding?.rvBookList?.adapter = bookAdapter
+
+        // show loading
         bookViewModel.liveData.observe(viewLifecycleOwner) {
-            Log.d("bookList" , it.toString())
-            bookAdapter.updateList(it)
+            if (it.loading) {
+                // show loading
+                _binding?.loading?.visibility = View.VISIBLE
+            }
+            if (it.listOfBooks.isNotEmpty()) {
+                _binding?.loading?.visibility = View.GONE
+                bookAdapter.updateList(it.listOfBooks)
+            }
+            if (it.errorMessage.isNotEmpty()) {
+                _binding?.loading?.visibility = View.GONE
+                Toast.makeText(context, it.errorMessage, Toast.LENGTH_LONG)
+                    .show()
+            }
         }
     }
 

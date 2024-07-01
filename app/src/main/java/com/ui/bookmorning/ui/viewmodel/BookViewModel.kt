@@ -16,15 +16,23 @@ import kotlin.coroutines.Continuation
 class BookViewModel(private val bookRepository: BookRepository) : ViewModel() {
 
     //LiveData , MutableLiveData
-    val liveData = MutableLiveData<List<BookModel>>()
+    val liveData = MutableLiveData<BookUiState>()
 
     // 2 builder function can call from normal function
 
     init {
+        liveData.value =
+            BookUiState(loading = true, listOfBooks = emptyList(), errorMessage = "")
+
+
         viewModelScope.launch {
             bookRepository.getBookList().let {
-                Log.d("bookList" , it.toString())
-                liveData.value = it
+                Log.d("bookList", it.toString())
+                liveData.value = BookUiState(
+                    loading = false,
+                    listOfBooks = it,
+                    errorMessage = ""
+                )
             }
         }
     }
@@ -35,3 +43,9 @@ class BookViewModel(private val bookRepository: BookRepository) : ViewModel() {
         Log.d("viewmodel", "clear")
     }
 }
+
+data class BookUiState(
+    val loading: Boolean,
+    val listOfBooks: List<BookModel>,
+    val errorMessage: String
+)
