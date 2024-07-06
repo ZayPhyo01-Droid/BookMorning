@@ -48,6 +48,7 @@ class BookListFragment : Fragment() {
 
                 is BookUiState.Error -> {
                     _binding?.loading?.visibility = View.GONE
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                 }
             }
         }

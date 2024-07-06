@@ -22,8 +22,8 @@ class BookViewModel(private val bookRepository: BookRepository) : ViewModel() {
     // 2 builder function can call from normal function
 
     init {
-        liveData.value =
-            BookUiState(loading = true, listOfBooks = emptyList(), errorMessage = "")
+        // Loading state emit
+        liveData.value = BookUiState.Loading
 
 
         viewModelScope.launch {
@@ -32,21 +32,28 @@ class BookViewModel(private val bookRepository: BookRepository) : ViewModel() {
                 .fold(
                     onSuccess = {
                         Log.d("bookList", it.toString())
-                        liveData.value = BookUiState(
-                            loading = false,
-                            listOfBooks = it,
-                            errorMessage = ""
-                        )
+                        liveData.value = BookUiState.Success(it)
                     },
                     onFailure = {
-                        when(it) {
-                            is ApiException -> {
-                                println("Code = ${it.code}, Message = ${it.message}")
-                            }
-                            else -> {
-                                println(it.message)
-                            }
-                        }
+//                        when (it) {
+//                            is ApiException -> {
+//                                liveData.value = BookUiState.Error(
+//                                    icon = "",
+//                                    message = it.message.toString()
+//                                )
+//                            }
+//
+//                            else -> {
+//                                liveData.value = BookUiState.Error(
+//                                    icon = "",
+//                                    message = it.message.toString()
+//                                )
+//                            }
+//                        }
+                        liveData.value = BookUiState.Error(
+                            icon = "",
+                            message = it.message.toString()
+                        )
                     }
                 )
         }
@@ -58,9 +65,15 @@ class BookViewModel(private val bookRepository: BookRepository) : ViewModel() {
         Log.d("viewmodel", "clear")
     }
 }
+//readable
+//Maintable
 
-data class BookUiState(
-    val loading: Boolean,
-    val listOfBooks: List<BookModel>,
-    val errorMessage: String
-)
+sealed class BookUiState {
+    object Loading : BookUiState()
+    data class Success(val bookList: List<BookModel>) : BookUiState()
+
+    data class Error(
+        val icon: String,
+        val message: String,
+    ) : BookUiState()
+}
