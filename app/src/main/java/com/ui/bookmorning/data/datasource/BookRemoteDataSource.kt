@@ -7,7 +7,8 @@ import com.ui.bookmorning.domain.model.BookModel
 class BookRemoteDataSource(
     private val bookService: BookService
 ) {
-    suspend fun getBookList(): List<BookModel> {
-        return bookService.getBook().toModel()
+    suspend fun getBookList(): Result<List<BookModel>> {
+        return bookService.getBook()
+            .map { it.toModel() }
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ui.bookmorning.data.repository.BookRepository
 import com.ui.bookmorning.domain.model.BookModel
+import com.ui.bookmorning.exceptions.ApiException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -26,14 +27,28 @@ class BookViewModel(private val bookRepository: BookRepository) : ViewModel() {
 
 
         viewModelScope.launch {
-            bookRepository.getBookList().let {
-                Log.d("bookList", it.toString())
-                liveData.value = BookUiState(
-                    loading = false,
-                    listOfBooks = it,
-                    errorMessage = ""
+            bookRepository
+                .getBookList()
+                .fold(
+                    onSuccess = {
+                        Log.d("bookList", it.toString())
+                        liveData.value = BookUiState(
+                            loading = false,
+                            listOfBooks = it,
+                            errorMessage = ""
+                        )
+                    },
+                    onFailure = {
+                        when(it) {
+                            is ApiException -> {
+                                println("Code = ${it.code}, Message = ${it.message}")
+                            }
+                            else -> {
+                                println(it.message)
+                            }
+                        }
+                    }
                 )
-            }
         }
     }
 

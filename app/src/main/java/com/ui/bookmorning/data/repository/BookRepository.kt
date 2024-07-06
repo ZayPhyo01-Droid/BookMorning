@@ -7,5 +7,5 @@ class BookRepository(
     private val bookRemoteDataSource: BookRemoteDataSource
 ) {
 
-    suspend fun getBookList(): List<BookModel> = bookRemoteDataSource.getBookList()
+    suspend fun getBookList(): Result<List<BookModel>> = bookRemoteDataSource.getBookList()
 }
