@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ui.bookmorning.databinding.ActivityLoginBinding
 import com.ui.bookmorning.ui.viewmodel.auth.LoginUiState
 import com.ui.bookmorning.ui.viewmodel.auth.LoginViewModel
+import com.ui.bookmorning.ui.viewmodel.auth.LoginViewModelEvent
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -17,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
 
     private val viewModel: LoginViewModel by viewModel()
 
-    val liveData : MutableLiveData<Int> = MutableLiveData()
+    val liveData: MutableLiveData<Int> = MutableLiveData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -25,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-       binding.btnLogin.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text
             val password = binding.edtPassword.text
             viewModel.login(
@@ -36,9 +37,14 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.uiState.observe(this) {
             when (it) {
-                is LoginUiState.Error -> {}
                 LoginUiState.Loading -> {}
-                LoginUiState.SuccessLogin -> {
+            }
+        }
+
+        viewModel.event.observe(this) {
+            when (it) {
+                is LoginViewModelEvent.Error -> {}
+                LoginViewModelEvent.SuccessLogin -> {
                     startActivity(
                         Intent(this, MainActivity::class.java)
                     )

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ui.bookmorning.data.repository.auth.AuthRepository
+import com.ui.bookmorning.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -11,6 +12,7 @@ class LoginViewModel(
 ) : ViewModel() {
 
     val uiState = MutableLiveData<LoginUiState>()
+    val event = SingleLiveEvent<LoginViewModelEvent>()
 
     //user event
     fun login(email: String, password: String) {
@@ -19,10 +21,10 @@ class LoginViewModel(
             authRepository.login(email, password)
                 .fold(
                     onSuccess = {
-                        uiState.value = LoginUiState.SuccessLogin
+                        event.value = LoginViewModelEvent.SuccessLogin
                     },
                     onFailure = {
-                        uiState.value = LoginUiState.Error(it.message.toString())
+                        event.value = LoginViewModelEvent.Error(it.message.toString())
                     }
                 )
         }
@@ -31,8 +33,10 @@ class LoginViewModel(
 
 sealed class LoginUiState {
     object Loading : LoginUiState()
+}
 
-    object SuccessLogin : LoginUiState()
+sealed class LoginViewModelEvent {
+    object SuccessLogin : LoginViewModelEvent()
 
-    data class Error(val message: String) : LoginUiState()
+    data class Error(val message: String) : LoginViewModelEvent()
 }
