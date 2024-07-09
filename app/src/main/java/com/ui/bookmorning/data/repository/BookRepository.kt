@@ -1,7 +1,7 @@
 package com.ui.bookmorning.data.repository
 
-import com.ui.bookmorning.data.datasource.BookRemoteDataSource
-import com.ui.bookmorning.domain.model.BookModel
+import com.ui.bookmorning.data.datasource.book.BookRemoteDataSource
+import com.ui.bookmorning.domain.model.book.BookModel
 
 class BookRepository(
     private val bookRemoteDataSource: BookRemoteDataSource

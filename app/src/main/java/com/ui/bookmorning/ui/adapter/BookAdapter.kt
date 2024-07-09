@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ui.bookmorning.databinding.ItemViewBookBinding
-import com.ui.bookmorning.domain.model.BookModel
+import com.ui.bookmorning.domain.model.book.BookModel
 import com.ui.bookmorning.ui.viewholder.BookViewHolder
 
-class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
+class BookAdapter(
+    private val onClickItem: (String, String, String) -> Unit
+) : RecyclerView.Adapter<BookViewHolder>() {
 
     private var bookList: List<BookModel> = emptyList()
     fun updateList(list: List<BookModel>) {
@@ -21,7 +23,8 @@ class BookAdapter : RecyclerView.Adapter<BookViewHolder>() {
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            onClickItem = onClickItem
         )
     }
 
