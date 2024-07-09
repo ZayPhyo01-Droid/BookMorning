@@ -1,6 +1,9 @@
 package com.ui.bookmorning
 
 import android.app.Application
+import com.ui.bookmorning.di.authRemoteDataSource
+import com.ui.bookmorning.di.authRepositoryModule
+import com.ui.bookmorning.di.authViewModelModule
 import com.ui.bookmorning.di.networkModule
 import com.ui.bookmorning.di.remoteDataSourceModule
 import com.ui.bookmorning.di.repositoryModule
@@ -16,6 +19,11 @@ class BookApplication : Application() {
                 networkModule,
                 repositoryModule,
                 remoteDataSourceModule
+            )
+            modules(
+                authRepositoryModule,
+                authViewModelModule,
+                authRemoteDataSource
             )
         }
     }
