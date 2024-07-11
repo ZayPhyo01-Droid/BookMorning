@@ -1,6 +1,8 @@
 package com.ui.bookmorning
 
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -76,5 +78,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    companion object {
+        fun newInstance(ctx: Context): Intent {
+            return  Intent(
+                ctx, MainActivity::class.java
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+        }
+    }
 }

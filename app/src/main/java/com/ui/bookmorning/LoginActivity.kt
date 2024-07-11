@@ -2,6 +2,7 @@ package com.ui.bookmorning
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.ui.bookmorning.databinding.ActivityLoginBinding
@@ -24,8 +25,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text
             val password = binding.edtPassword.text
@@ -45,9 +44,15 @@ class LoginActivity : AppCompatActivity() {
             when (it) {
                 is LoginViewModelEvent.Error -> {}
                 LoginViewModelEvent.SuccessLogin -> {
-                    startActivity(
-                        Intent(this, MainActivity::class.java)
-                    )
+                    Toast.makeText(this, "Successfully Logged In", Toast.LENGTH_LONG).show()
+                    MainActivity.newInstance(this).also { intent ->
+                        startActivity(intent)
+                    }
+                }
+                LoginViewModelEvent.UserAlreadyLoggedIn -> {
+                    MainActivity.newInstance(this).also { intent ->
+                        startActivity(intent)
+                    }
                 }
             }
         }

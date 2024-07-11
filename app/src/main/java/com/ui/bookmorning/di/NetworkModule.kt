@@ -1,6 +1,7 @@
 package com.ui.bookmorning.di
 
 import com.ui.bookmorning.data.network.KtorHelper
+import com.ui.bookmorning.data.service.AuthService
 import com.ui.bookmorning.data.service.BookService
 import org.koin.core.scope.get
 import org.koin.dsl.module
@@ -16,6 +17,12 @@ val networkModule = module {
     single {
         BookService(
             get()
+        )
+    }
+
+    single {
+        AuthService(
+            httpClient = get()
         )
     }
 }

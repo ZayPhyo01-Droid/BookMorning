@@ -13,6 +13,9 @@ val repositoryModule = module {
 
 val authRepositoryModule = module {
     single {
-        AuthRepository(get())
+        AuthRepository(
+            authRemoteDataSource = get(),
+            authLocalDataSource = get()
+        )
     }
 }

@@ -14,6 +14,12 @@ class LoginViewModel(
     val uiState = MutableLiveData<LoginUiState>()
     val event = SingleLiveEvent<LoginViewModelEvent>()
 
+    init {
+        if (authRepository.isUserLoggedIn()) {
+            event.value = LoginViewModelEvent.UserAlreadyLoggedIn
+        }
+    }
+
     //user event
     fun login(email: String, password: String) {
         uiState.value = LoginUiState.Loading
@@ -36,7 +42,7 @@ sealed class LoginUiState {
 }
 
 sealed class LoginViewModelEvent {
-    object SuccessLogin : LoginViewModelEvent()
-
+    data object SuccessLogin : LoginViewModelEvent()
     data class Error(val message: String) : LoginViewModelEvent()
+    data object UserAlreadyLoggedIn: LoginViewModelEvent()
 }
