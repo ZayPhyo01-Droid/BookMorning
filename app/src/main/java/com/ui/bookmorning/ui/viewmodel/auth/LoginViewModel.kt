@@ -1,5 +1,6 @@
 package com.ui.bookmorning.ui.viewmodel.auth
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,11 +8,16 @@ import com.ui.bookmorning.data.repository.auth.AuthRepository
 import com.ui.bookmorning.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
+// state , view event -> viewmodel
+// ui should not , render
+
 class LoginViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    val uiState = MutableLiveData<LoginUiState>()
+    private val _uiState = MutableLiveData<LoginUiState>()
+    val uiState : LiveData<LoginUiState> = _uiState
+
     val event = SingleLiveEvent<LoginViewModelEvent>()
 
     init {
@@ -22,7 +28,7 @@ class LoginViewModel(
 
     //user event
     fun login(email: String, password: String) {
-        uiState.value = LoginUiState.Loading
+        _uiState.value = LoginUiState.Loading
         viewModelScope.launch {
             authRepository.login(email, password)
                 .fold(
